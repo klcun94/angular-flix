@@ -11,21 +11,24 @@ export class MovieService {
   myMovieList: any[] = [];
   constructor(private apiService: ApiService,
               private movieApiService: MovieAPIService) { }
-}
-getSearchResults(): any[] {
-  return this.searchResults;
-}
-getMyMovieList(): any[] {
-  return this.myMovieList;
-}
-async searchForMovies(searchTerm: string) {
-
-}
-async loadMovieList() {
-  const result = await this.apiServie.get();
-  this.myMovieList.length = 0;
-  this.myMovieList.push(...results);
-}
-async saveToList(movie: any) {
-  this.apiService.post(movies);
+  getSearchResults(): any[] {
+    return this.searchResults;
+  }
+  getMyMovieList(): any[] {
+    return this.myMovieList;
+  }
+  async searchForMovies(searchTerm: string) {
+    const response = await this.movieApiService.get(searchTerm);
+    this.searchResults.length = 0;
+    this.searchResults.push(...response.results);
+  }
+  async loadMovieList() {
+    const results = await this.apiService.get();
+    this.myMovieList.length = 0;
+    this.myMovieList.push(...results);
+  }
+  async saveToList(movie: any) {
+    this.apiService.post(movie);
+    this.loadMovieList();
+  }
 }
